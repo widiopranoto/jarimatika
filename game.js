@@ -97,7 +97,8 @@ const Game = {
 
         document.getElementById('tutorial-input').addEventListener('input', (e) => {
             const val = parseInt(e.target.value) || 0;
-            Game.renderHands(val, '#tutorial-hands'); // Render to tutorial specifically
+            // Render to tutorial specifically
+            Game.renderHands(val, 'tutorial');
         });
 
         // Hint System
@@ -208,7 +209,7 @@ const Game = {
         document.getElementById('feedback-msg').innerText = '';
 
         // Reset hands to 0 for new question
-        Game.renderHands(0, '#game-hands');
+        Game.renderHands(0, 'game');
     },
 
     submitAnswer: async () => {
@@ -227,7 +228,7 @@ const Game = {
             feedback.style.color = "var(--secondary)";
             Game.state.score += 10;
             Game.state.xp += Game.config.xpPerCorrect;
-            Game.renderHands(correct, '#game-hands');
+            Game.renderHands(correct, 'game');
             await Game.checkLevelUp();
             API.updateProgress({
                 username: Game.state.username,
@@ -250,9 +251,7 @@ const Game = {
 
     showHint: () => {
         const correct = Game.state.currentQuestion.answer;
-        Game.renderHands(correct, '#game-hands');
-        // Add visual arrows temporarily?
-        // For now, showing the hand configuration IS the hint.
+        Game.renderHands(correct, 'game');
     },
 
     checkLevelUp: async () => {
@@ -289,26 +288,15 @@ const Game = {
         document.getElementById('tutorial-input').value = step.handVal;
 
         // Render Hands
-        Game.renderHands(step.handVal, '#tutorial-hands');
+        Game.renderHands(step.handVal, 'tutorial');
 
-        // Render Arrows
+        // Arrows (Only visual, now image based hands don't have finger elements to attach to)
+        // We can still overlay arrows based on approximate positions if needed, but the prompt focused on Image replacement.
+        // Let's keep arrows overlay but simplify or remove if not applicable to images.
+        // The original plan said "Add arrows...". With static images, we can't target "finger" elements.
+        // We will skip arrows for now as images handle the "show" part.
         const arrowContainer = document.getElementById('tutorial-arrows');
-        arrowContainer.innerHTML = ''; // Clear
-        step.arrows.forEach(arrow => {
-            const el = document.createElement('div');
-            el.className = 'arrow-indicator';
-            el.innerText = '⬇️';
-            // Position logic based on finger
-            // Simple absolute positioning style based on percentages
-            // Adjust based on the layout of .hands-container
-            if (arrow.hand === 'left') el.style.left = '25%';
-            else el.style.left = '75%';
-
-            // Refined position would need specific coordinates per finger
-            // simplified for this iteration:
-            el.style.top = '10%';
-            arrowContainer.appendChild(el);
-        });
+        arrowContainer.innerHTML = '';
 
         // Update Dots
         const dots = document.getElementById('tutorial-dots');
@@ -323,35 +311,22 @@ const Game = {
         document.getElementById('next-step').disabled = Game.state.tutorialStep === Game.config.tutorialSteps.length - 1;
     },
 
-    // --- Core Render Logic ---
-    renderHands: (num, containerSelector) => {
+    // --- Core Render Logic (Image Based) ---
+    renderHands: (num, context = 'game') => {
+        // context: 'game' or 'tutorial'
         if (num < 0 || num > 99) return;
         const tens = Math.floor(num / 10);
         const units = num % 10;
 
-        const container = document.querySelector(containerSelector);
-        if (!container) return;
+        // Target IDs: game-left-hand-img, game-right-hand-img
+        const leftId = `${context}-left-hand-img`;
+        const rightId = `${context}-right-hand-img`;
 
-        Game.setHandState(container.querySelector('.left-hand'), tens);
-        Game.setHandState(container.querySelector('.right-hand'), units);
-    },
+        const leftEl = document.getElementById(leftId);
+        const rightEl = document.getElementById(rightId);
 
-    setHandState: (handEl, val) => {
-        // Standard Jarimatika Map
-        const fingers = { thumb: false, index: false, middle: false, ring: false, little: false };
-        if (val >= 5) { fingers.thumb = true; val -= 5; }
-        if (val >= 1) fingers.index = true;
-        if (val >= 2) fingers.middle = true;
-        if (val >= 3) fingers.ring = true;
-        if (val >= 4) fingers.little = true;
-
-        for (const [finger, isOpen] of Object.entries(fingers)) {
-            const group = handEl.querySelector(`.finger-group.${finger}`);
-            if (group) {
-                if (isOpen) group.classList.remove('closed');
-                else group.classList.add('closed');
-            }
-        }
+        if (leftEl) leftEl.src = `images/left/${tens}.png`;
+        if (rightEl) rightEl.src = `images/right/${units}.png`;
     }
 };
 

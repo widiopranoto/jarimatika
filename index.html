@@ -72,69 +72,17 @@
                 <span id="question-text">5 + 3 = ?</span>
             </div>
 
-            <!-- Realistic Vector Hands Visualization -->
+            <!-- Image Hands Visualization -->
             <div class="hands-container" id="game-hands">
                 <!-- Left Hand (Tens) -->
                 <div class="hand-wrapper left-hand">
-                    <svg viewBox="0 0 200 250" class="hand-svg-realistic-v2">
-                        <defs><linearGradient id="palmGradient" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#fce4d6;stop-opacity:1" /><stop offset="100%" style="stop-color:#f0cbb5;stop-opacity:1" /></linearGradient></defs>
-                        <path d="M40,140 Q60,130 150,150 L140,220 Q80,240 40,210 Z" class="palm-base hand-part" fill="url(#palmGradient)" />
-                        <path d="M60,160 Q100,180 130,160" class="crease" />
-
-                        <!-- Fingers (Left: Thumb | Index | Middle | Ring | Little) -->
-                        <g class="finger-group thumb" data-finger="thumb" style="transform-origin: 30px 140px">
-                            <path d="M20,130 Q10,100 40,90 Q60,100 50,140 Z" class="hand-part finger-path" />
-                            <ellipse cx="35" cy="110" rx="6" ry="8" class="nail" /><path d="M25,120 Q35,125 45,120" class="crease" />
-                        </g>
-                        <g class="finger-group index" data-finger="index" style="transform-origin: 60px 140px">
-                            <path d="M50,140 Q50,60 60,50 Q80,60 80,140 Z" class="hand-part finger-path" />
-                            <ellipse cx="65" cy="70" rx="6" ry="8" class="nail" /><path d="M55,90 Q65,95 75,90" class="crease" /><path d="M55,115 Q65,120 75,115" class="crease" />
-                        </g>
-                        <g class="finger-group middle" data-finger="middle" style="transform-origin: 90px 140px">
-                            <path d="M80,140 Q80,40 95,30 Q110,40 110,140 Z" class="hand-part finger-path" />
-                            <ellipse cx="95" cy="50" rx="6" ry="8" class="nail" /><path d="M85,75 Q95,80 105,75" class="crease" /><path d="M85,105 Q95,110 105,105" class="crease" />
-                        </g>
-                        <g class="finger-group ring" data-finger="ring" style="transform-origin: 120px 145px">
-                            <path d="M110,145 Q110,50 120,40 Q140,50 140,145 Z" class="hand-part finger-path" />
-                            <ellipse cx="125" cy="60" rx="6" ry="8" class="nail" /><path d="M115,85 Q125,90 135,85" class="crease" /><path d="M115,115 Q125,120 135,115" class="crease" />
-                        </g>
-                        <g class="finger-group little" data-finger="little" style="transform-origin: 150px 150px">
-                            <path d="M140,150 Q140,70 150,65 Q170,70 160,150 Z" class="hand-part finger-path" />
-                            <ellipse cx="153" cy="85" rx="5" ry="6" class="nail" /><path d="M145,100 Q153,105 160,100" class="crease" /><path d="M145,125 Q153,130 160,125" class="crease" />
-                        </g>
-                    </svg>
+                    <img src="images/left/0.png" alt="Tangan Kiri 0" class="hand-image" id="game-left-hand-img" />
                     <div class="hand-label">Puluhan (Kiri)</div>
                 </div>
 
                 <!-- Right Hand (Units) -->
                 <div class="hand-wrapper right-hand">
-                    <svg viewBox="0 0 200 250" class="hand-svg-realistic-v2">
-                        <defs><linearGradient id="palmGradientR" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#fce4d6;stop-opacity:1" /><stop offset="100%" style="stop-color:#f0cbb5;stop-opacity:1" /></linearGradient></defs>
-                        <path d="M160,140 Q140,130 50,150 L60,220 Q120,240 160,210 Z" class="palm-base hand-part" fill="url(#palmGradientR)" />
-                        <path d="M140,160 Q100,180 70,160" class="crease" />
-
-                        <!-- Fingers (Right: Index -> Little -> Thumb on Right) -->
-                        <g class="finger-group index" data-finger="index" style="transform-origin: 140px 140px">
-                            <path d="M150,140 Q150,60 140,50 Q120,60 120,140 Z" class="hand-part finger-path" />
-                            <ellipse cx="135" cy="70" rx="6" ry="8" class="nail" /><path d="M145,90 Q135,95 125,90" class="crease" /><path d="M145,115 Q135,120 125,115" class="crease" />
-                        </g>
-                        <g class="finger-group middle" data-finger="middle" style="transform-origin: 110px 140px">
-                            <path d="M120,140 Q120,40 105,30 Q90,40 90,140 Z" class="hand-part finger-path" />
-                            <ellipse cx="105" cy="50" rx="6" ry="8" class="nail" /><path d="M115,75 Q105,80 95,75" class="crease" /><path d="M115,105 Q105,110 95,105" class="crease" />
-                        </g>
-                        <g class="finger-group ring" data-finger="ring" style="transform-origin: 80px 145px">
-                            <path d="M90,145 Q90,50 80,40 Q60,50 60,145 Z" class="hand-part finger-path" />
-                            <ellipse cx="75" cy="60" rx="6" ry="8" class="nail" /><path d="M85,85 Q75,90 65,85" class="crease" /><path d="M85,115 Q75,120 65,115" class="crease" />
-                        </g>
-                        <g class="finger-group little" data-finger="little" style="transform-origin: 50px 150px">
-                            <path d="M60,150 Q60,70 50,65 Q30,70 40,150 Z" class="hand-part finger-path" />
-                            <ellipse cx="47" cy="85" rx="5" ry="6" class="nail" /><path d="M55,100 Q47,105 40,100" class="crease" /><path d="M55,125 Q47,130 40,125" class="crease" />
-                        </g>
-                        <g class="finger-group thumb" data-finger="thumb" style="transform-origin: 170px 140px">
-                            <path d="M180,130 Q190,100 160,90 Q140,100 150,140 Z" class="hand-part finger-path" />
-                            <ellipse cx="165" cy="110" rx="6" ry="8" class="nail" /><path d="M175,120 Q165,125 155,120" class="crease" />
-                        </g>
-                    </svg>
+                    <img src="images/right/0.png" alt="Tangan Kanan 0" class="hand-image" id="game-right-hand-img" />
                     <div class="hand-label">Satuan (Kanan)</div>
                 </div>
             </div>
@@ -146,7 +94,7 @@
             <div id="feedback-msg"></div>
         </div>
 
-        <!-- Tutorial Screen (Updated with Realistic Hands) -->
+        <!-- Tutorial Screen -->
         <div id="tutorial-screen" class="screen">
             <header>
                 <h2>Panduan Jarimatika</h2>
@@ -164,33 +112,13 @@
                         <div class="hands-container" id="tutorial-hands">
                             <!-- Left Hand Tutorial -->
                             <div class="hand-wrapper left-hand tutorial-hand">
-                                <svg viewBox="0 0 200 250" class="hand-svg-realistic-v2">
-                                    <defs><linearGradient id="palmGradientLT" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#fce4d6;stop-opacity:1" /><stop offset="100%" style="stop-color:#f0cbb5;stop-opacity:1" /></linearGradient></defs>
-                                    <path d="M40,140 Q60,130 150,150 L140,220 Q80,240 40,210 Z" class="palm-base hand-part" fill="url(#palmGradientLT)" />
-                                    <path d="M60,160 Q100,180 130,160" class="crease" />
-
-                                    <g class="finger-group thumb" data-finger="thumb" style="transform-origin: 30px 140px"><path d="M20,130 Q10,100 40,90 Q60,100 50,140 Z" class="hand-part finger-path" /><ellipse cx="35" cy="110" rx="6" ry="8" class="nail" /><path d="M25,120 Q35,125 45,120" class="crease" /></g>
-                                    <g class="finger-group index" data-finger="index" style="transform-origin: 60px 140px"><path d="M50,140 Q50,60 60,50 Q80,60 80,140 Z" class="hand-part finger-path" /><ellipse cx="65" cy="70" rx="6" ry="8" class="nail" /><path d="M55,90 Q65,95 75,90" class="crease" /><path d="M55,115 Q65,120 75,115" class="crease" /></g>
-                                    <g class="finger-group middle" data-finger="middle" style="transform-origin: 90px 140px"><path d="M80,140 Q80,40 95,30 Q110,40 110,140 Z" class="hand-part finger-path" /><ellipse cx="95" cy="50" rx="6" ry="8" class="nail" /><path d="M85,75 Q95,80 105,75" class="crease" /><path d="M85,105 Q95,110 105,105" class="crease" /></g>
-                                    <g class="finger-group ring" data-finger="ring" style="transform-origin: 120px 145px"><path d="M110,145 Q110,50 120,40 Q140,50 140,145 Z" class="hand-part finger-path" /><ellipse cx="125" cy="60" rx="6" ry="8" class="nail" /><path d="M115,85 Q125,90 135,85" class="crease" /><path d="M115,115 Q125,120 135,115" class="crease" /></g>
-                                    <g class="finger-group little" data-finger="little" style="transform-origin: 150px 150px"><path d="M140,150 Q140,70 150,65 Q170,70 160,150 Z" class="hand-part finger-path" /><ellipse cx="153" cy="85" rx="5" ry="6" class="nail" /><path d="M145,100 Q153,105 160,100" class="crease" /><path d="M145,125 Q153,130 160,125" class="crease" /></g>
-                                </svg>
+                                <img src="images/left/0.png" alt="Tangan Kiri" class="hand-image" id="tutorial-left-hand-img" />
                                 <div class="hand-label">Puluhan (Kiri)</div>
                             </div>
 
                             <!-- Right Hand Tutorial -->
                             <div class="hand-wrapper right-hand tutorial-hand">
-                                <svg viewBox="0 0 200 250" class="hand-svg-realistic-v2">
-                                    <defs><linearGradient id="palmGradientRT" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#fce4d6;stop-opacity:1" /><stop offset="100%" style="stop-color:#f0cbb5;stop-opacity:1" /></linearGradient></defs>
-                                    <path d="M160,140 Q140,130 50,150 L60,220 Q120,240 160,210 Z" class="palm-base hand-part" fill="url(#palmGradientRT)" />
-                                    <path d="M140,160 Q100,180 70,160" class="crease" />
-
-                                    <g class="finger-group index" data-finger="index" style="transform-origin: 140px 140px"><path d="M150,140 Q150,60 140,50 Q120,60 120,140 Z" class="hand-part finger-path" /><ellipse cx="135" cy="70" rx="6" ry="8" class="nail" /><path d="M145,90 Q135,95 125,90" class="crease" /><path d="M145,115 Q135,120 125,115" class="crease" /></g>
-                                    <g class="finger-group middle" data-finger="middle" style="transform-origin: 110px 140px"><path d="M120,140 Q120,40 105,30 Q90,40 90,140 Z" class="hand-part finger-path" /><ellipse cx="105" cy="50" rx="6" ry="8" class="nail" /><path d="M115,75 Q105,80 95,75" class="crease" /><path d="M115,105 Q105,110 95,105" class="crease" /></g>
-                                    <g class="finger-group ring" data-finger="ring" style="transform-origin: 80px 145px"><path d="M90,145 Q90,50 80,40 Q60,50 60,145 Z" class="hand-part finger-path" /><ellipse cx="75" cy="60" rx="6" ry="8" class="nail" /><path d="M85,85 Q75,90 65,85" class="crease" /><path d="M85,115 Q75,120 65,115" class="crease" /></g>
-                                    <g class="finger-group little" data-finger="little" style="transform-origin: 50px 150px"><path d="M60,150 Q60,70 50,65 Q30,70 40,150 Z" class="hand-part finger-path" /><ellipse cx="47" cy="85" rx="5" ry="6" class="nail" /><path d="M55,100 Q47,105 40,100" class="crease" /><path d="M55,125 Q47,130 40,125" class="crease" /></g>
-                                    <g class="finger-group thumb" data-finger="thumb" style="transform-origin: 170px 140px"><path d="M180,130 Q190,100 160,90 Q140,100 150,140 Z" class="hand-part finger-path" /><ellipse cx="165" cy="110" rx="6" ry="8" class="nail" /><path d="M175,120 Q165,125 155,120" class="crease" /></g>
-                                </svg>
+                                <img src="images/right/0.png" alt="Tangan Kanan" class="hand-image" id="tutorial-right-hand-img" />
                                 <div class="hand-label">Satuan (Kanan)</div>
                             </div>
                         </div>
