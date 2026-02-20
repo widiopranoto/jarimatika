@@ -159,10 +159,10 @@ input:focus {
     transition: width 0.5s ease;
 }
 
-/* Geometric Hand Styling */
+/* Slim & Rounded Hand Styling */
 .hand-svg-geometric {
-    width: 180px; /* Adjusted size */
-    height: 140px;
+    width: 200px;
+    height: 160px;
     margin: 10px;
     overflow: visible;
 }
@@ -171,6 +171,7 @@ input:focus {
     fill: var(--skin);
     stroke: var(--skin-shadow);
     stroke-width: 2;
+    /* Very rounded corners */
 }
 
 .finger-rect {
@@ -179,17 +180,19 @@ input:focus {
     stroke-width: 2;
     transition: all 0.2s cubic-bezier(0.4, 0.0, 0.2, 1);
     transform-origin: center bottom;
+    /* Capsule shape achieved via high RX */
+    rx: 8;
 }
 
-/* Closed State: Scale down vertically to simulate folding */
+/* Closed State: Scale down */
 .finger-group.closed .finger-rect {
     fill: var(--finger-closed);
-    transform: scaleY(0.2);
+    transform: scaleY(0.15);
     opacity: 0.6;
 }
 
 .finger-label {
-    font-size: 10px;
+    font-size: 11px;
     fill: #555;
     text-anchor: middle;
     pointer-events: none;
