@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Belajar Jarimatika</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="app">
+        
+        <!-- Login Screen -->
+        <div id="login-screen" class="screen active">
+            <h1>Belajar Jarimatika</h1>
+            <div class="mascot-placeholder">👋</div>
+            <p>Masukkan namamu untuk mulai bermain!</p>
+            <input type="text" id="username-input" placeholder="Namamu..." />
+            <button id="login-btn">Mulai Petualangan</button>
+            <div id="login-message"></div>
+        </div>
+
+        <!-- Dashboard Screen -->
+        <div id="dashboard-screen" class="screen">
+            <header>
+                <div class="user-info">
+                    <span id="display-username">Player</span>
+                    <span class="xp-badge">XP: <span id="total-xp">0</span></span>
+                </div>
+                <button class="small-btn" id="tutorial-btn">?</button>
+            </header>
+            <h2>Pilih Tantangan</h2>
+            <div class="level-grid">
+                <div class="level-card" data-op="add">
+                    <div class="icon">➕</div>
+                    <h3>Penjumlahan</h3>
+                    <p>Level: <span class="level-val">1</span></p>
+                    <div class="progress-bar"><div class="fill" style="width: 0%"></div></div>
+                </div>
+                <div class="level-card" data-op="sub">
+                    <div class="icon">➖</div>
+                    <h3>Pengurangan</h3>
+                    <p>Level: <span class="level-val">1</span></p>
+                    <div class="progress-bar"><div class="fill" style="width: 0%"></div></div>
+                </div>
+                <div class="level-card" data-op="mul">
+                    <div class="icon">✖️</div>
+                    <h3>Perkalian</h3>
+                    <p>Level: <span class="level-val">1</span></p>
+                    <div class="progress-bar"><div class="fill" style="width: 0%"></div></div>
+                </div>
+                <div class="level-card" data-op="div">
+                    <div class="icon">➗</div>
+                    <h3>Pembagian</h3>
+                    <p>Level: <span class="level-val">1</span></p>
+                    <div class="progress-bar"><div class="fill" style="width: 0%"></div></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Game Screen -->
+        <div id="game-screen" class="screen">
+            <header>
+                <button class="small-btn" id="back-btn">⬅️</button>
+                <div class="score-board">
+                    <span>Score: <span id="game-score">0</span></span>
+                </div>
+            </header>
+            
+            <div class="question-area">
+                <span id="question-text">5 + 3 = ?</span>
+            </div>
+
+            <!-- Hands Visualization -->
+            <div class="hands-container">
+                <!-- Left Hand (Tens) -->
+                <div class="hand-wrapper left-hand">
+                    <svg viewBox="0 0 100 120" class="hand-svg">
+                        <!-- Palm -->
+                        <path d="M30,60 Q50,50 70,60 L70,110 Q50,120 30,110 Z" fill="#ffccaa" />
+                        <!-- Thumb -->
+                        <g class="finger thumb" data-finger="thumb">
+                            <rect x="70" y="70" width="30" height="15" rx="7" fill="#ffccaa" transform="rotate(-30 70 80)" />
+                        </g>
+                        <!-- Fingers -->
+                        <g class="finger index" data-finger="index"><rect x="60" y="20" width="12" height="45" rx="6" fill="#ffccaa" /></g>
+                        <g class="finger middle" data-finger="middle"><rect x="45" y="15" width="12" height="50" rx="6" fill="#ffccaa" /></g>
+                        <g class="finger ring" data-finger="ring"><rect x="30" y="20" width="12" height="45" rx="6" fill="#ffccaa" /></g>
+                        <g class="finger little" data-finger="little"><rect x="15" y="30" width="12" height="35" rx="6" fill="#ffccaa" /></g>
+                    </svg>
+                    <div class="hand-label">Puluhan</div>
+                </div>
+
+                <!-- Right Hand (Units) -->
+                <div class="hand-wrapper right-hand">
+                    <svg viewBox="0 0 100 120" class="hand-svg">
+                         <!-- Palm -->
+                         <path d="M30,60 Q50,50 70,60 L70,110 Q50,120 30,110 Z" fill="#ffccaa" />
+                         <!-- Thumb -->
+                         <g class="finger thumb" data-finger="thumb">
+                             <rect x="0" y="70" width="30" height="15" rx="7" fill="#ffccaa" transform="rotate(30 30 80)" />
+                         </g>
+                         <!-- Fingers -->
+                         <g class="finger index" data-finger="index"><rect x="28" y="20" width="12" height="45" rx="6" fill="#ffccaa" /></g>
+                         <g class="finger middle" data-finger="middle"><rect x="43" y="15" width="12" height="50" rx="6" fill="#ffccaa" /></g>
+                         <g class="finger ring" data-finger="ring"><rect x="58" y="20" width="12" height="45" rx="6" fill="#ffccaa" /></g>
+                         <g class="finger little" data-finger="little"><rect x="73" y="30" width="12" height="35" rx="6" fill="#ffccaa" /></g>
+                    </svg>
+                    <div class="hand-label">Satuan</div>
+                </div>
+            </div>
+
+            <div class="input-area">
+                <input type="number" id="answer-input" placeholder="?" />
+                <button id="submit-answer">Jawab</button>
+            </div>
+            <div id="feedback-msg"></div>
+        </div>
+
+        <!-- Tutorial Screen -->
+        <div id="tutorial-screen" class="screen">
+            <header>
+                <h2>Cara Bermain</h2>
+                <button class="small-btn" id="close-tutorial">✖️</button>
+            </header>
+            <div class="tutorial-content">
+                <p><strong>Tangan Kanan (Satuan):</strong></p>
+                <ul>
+                    <li>Telunjuk = 1</li>
+                    <li>Jempol = 5</li>
+                    <li>Semua jari = 9</li>
+                </ul>
+                <p><strong>Tangan Kiri (Puluhan):</strong></p>
+                <ul>
+                    <li>Telunjuk = 10</li>
+                    <li>Jempol = 50</li>
+                    <li>Semua jari = 90</li>
+                </ul>
+                <div class="tutorial-demo">
+                    <p>Coba ketik angka:</p>
+                    <input type="number" id="tutorial-input" placeholder="0-99">
+                    
+                    <!-- Tutorial Hands -->
+                    <div class="hands-container tutorial-hands">
+                        <!-- Left Hand (Tens) -->
+                        <div class="hand-wrapper left-hand">
+                            <svg viewBox="0 0 100 120" class="hand-svg">
+                                <path d="M30,60 Q50,50 70,60 L70,110 Q50,120 30,110 Z" fill="#ffccaa" />
+                                <g class="finger thumb" data-finger="thumb"><rect x="70" y="70" width="30" height="15" rx="7" fill="#ffccaa" transform="rotate(-30 70 80)" /></g>
+                                <g class="finger index" data-finger="index"><rect x="60" y="20" width="12" height="45" rx="6" fill="#ffccaa" /></g>
+                                <g class="finger middle" data-finger="middle"><rect x="45" y="15" width="12" height="50" rx="6" fill="#ffccaa" /></g>
+                                <g class="finger ring" data-finger="ring"><rect x="30" y="20" width="12" height="45" rx="6" fill="#ffccaa" /></g>
+                                <g class="finger little" data-finger="little"><rect x="15" y="30" width="12" height="35" rx="6" fill="#ffccaa" /></g>
+                            </svg>
+                            <div class="hand-label">Puluhan</div>
+                        </div>
+
+                        <!-- Right Hand (Units) -->
+                        <div class="hand-wrapper right-hand">
+                            <svg viewBox="0 0 100 120" class="hand-svg">
+                                <path d="M30,60 Q50,50 70,60 L70,110 Q50,120 30,110 Z" fill="#ffccaa" />
+                                <g class="finger thumb" data-finger="thumb"><rect x="0" y="70" width="30" height="15" rx="7" fill="#ffccaa" transform="rotate(30 30 80)" /></g>
+                                <g class="finger index" data-finger="index"><rect x="28" y="20" width="12" height="45" rx="6" fill="#ffccaa" /></g>
+                                <g class="finger middle" data-finger="middle"><rect x="43" y="15" width="12" height="50" rx="6" fill="#ffccaa" /></g>
+                                <g class="finger ring" data-finger="ring"><rect x="58" y="20" width="12" height="45" rx="6" fill="#ffccaa" /></g>
+                                <g class="finger little" data-finger="little"><rect x="73" y="30" width="12" height="35" rx="6" fill="#ffccaa" /></g>
+                            </svg>
+                            <div class="hand-label">Satuan</div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Audio Elements -->
+    <audio id="sfx-correct" src="sounds/correct.wav"></audio>
+    <audio id="sfx-wrong" src="sounds/wrong.wav"></audio>
+    <audio id="sfx-click" src="sounds/click.wav"></audio>
+    <audio id="sfx-levelup" src="sounds/levelup.wav"></audio>
+
+    <script src="api.js"></script>
+    <script src="game.js"></script>
+</body>
+</html>
