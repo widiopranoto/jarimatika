@@ -299,3 +299,75 @@ header {
     margin-left: 10px;
     font-size: 0.9em;
 }
+/* Realistic Vector Hand Style */
+:root {
+    --skin-base: #f4c29e;
+    --skin-shadow: #e0b090;
+    --skin-highlight: #ffe0c0;
+    --outline: #a07050;
+    --nail: #fce4d6;
+}
+
+.hand-svg-realistic-v2 {
+    width: 220px;
+    height: 250px;
+    margin: 0;
+    overflow: visible;
+    filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
+}
+
+/* Base Shapes */
+.hand-part {
+    fill: var(--skin-base);
+    stroke: var(--outline);
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    transition: d 0.3s ease, transform 0.3s ease; /* Animate path morphing if possible */
+}
+
+/* Finger Groups */
+.finger-group {
+    transform-origin: center bottom; /* Pivot at the base (knuckle) */
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* Open State (Default) */
+.finger-path {
+    fill: var(--skin-base);
+}
+
+/* Closed State */
+/* Instead of just scaling, we rotate and maybe darken/change shape visually */
+/* For a truly realistic look without complex morphing, we rotate the finger down into the palm */
+
+.finger-group.closed {
+    /* Fold down */
+    transform: scaleY(0.4) translateY(80px);
+    opacity: 0.9;
+}
+
+/* Specific Finger Tweaks for "Realistic" feel */
+/* Thumb has a different hinge */
+.thumb-group {
+    transform-origin: 20px 80px; /* Adjust per hand */
+}
+
+/* Nail detail */
+.nail {
+    fill: var(--nail);
+    opacity: 0.6;
+}
+
+/* Creases */
+.crease {
+    fill: none;
+    stroke: var(--outline);
+    stroke-width: 1;
+    opacity: 0.5;
+}
+
+/* Palm Shading */
+.palm-base {
+    fill: url(#palmGradient);
+}

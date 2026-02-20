@@ -1,0 +1,57 @@
+<!-- Tangan Kanan (Realistic Vector - Mirrored Logic) -->
+<svg viewBox="0 0 200 250" class="hand-svg-realistic-v2">
+    <defs>
+        <linearGradient id="palmGradientR" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#fce4d6;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#f0cbb5;stop-opacity:1" />
+        </linearGradient>
+    </defs>
+
+    <!-- Palm -->
+    <path d="M160,140 Q140,130 50,150 L60,220 Q120,240 160,210 Z" class="palm-base hand-part" fill="url(#palmGradientR)" />
+    <path d="M140,160 Q100,180 70,160" class="crease" />
+
+    <!-- Fingers (Right: Index -> Little -> Thumb on Right) -->
+    <!-- Wait, user said Thumb on Right side for Right hand. Standard anatomy: Back of hand facing viewer = Thumb on Left. Palm facing viewer = Thumb on Right. -->
+    <!-- We assume PALM facing viewer based on "Open" logic. -->
+
+    <!-- Index -->
+    <g class="finger-group index" style="transform-origin: 140px 140px">
+        <path d="M150,140 Q150,60 140,50 Q120,60 120,140 Z" class="hand-part finger-path" />
+        <ellipse cx="135" cy="70" rx="6" ry="8" class="nail" />
+        <path d="M145,90 Q135,95 125,90" class="crease" />
+        <path d="M145,115 Q135,120 125,115" class="crease" />
+    </g>
+
+    <!-- Middle -->
+    <g class="finger-group middle" style="transform-origin: 110px 140px">
+        <path d="M120,140 Q120,40 105,30 Q90,40 90,140 Z" class="hand-part finger-path" />
+        <ellipse cx="105" cy="50" rx="6" ry="8" class="nail" />
+        <path d="M115,75 Q105,80 95,75" class="crease" />
+        <path d="M115,105 Q105,110 95,105" class="crease" />
+    </g>
+
+    <!-- Ring -->
+    <g class="finger-group ring" style="transform-origin: 80px 145px">
+        <path d="M90,145 Q90,50 80,40 Q60,50 60,145 Z" class="hand-part finger-path" />
+        <ellipse cx="75" cy="60" rx="6" ry="8" class="nail" />
+        <path d="M85,85 Q75,90 65,85" class="crease" />
+        <path d="M85,115 Q75,120 65,115" class="crease" />
+    </g>
+
+    <!-- Little -->
+    <g class="finger-group little" style="transform-origin: 50px 150px">
+        <path d="M60,150 Q60,70 50,65 Q30,70 40,150 Z" class="hand-part finger-path" />
+        <ellipse cx="47" cy="85" rx="5" ry="6" class="nail" />
+        <path d="M55,100 Q47,105 40,100" class="crease" />
+        <path d="M55,125 Q47,130 40,125" class="crease" />
+    </g>
+
+    <!-- Thumb (Right Side) -->
+    <g class="finger-group thumb" style="transform-origin: 170px 140px">
+        <path d="M180,130 Q190,100 160,90 Q140,100 150,140 Z" class="hand-part finger-path" />
+        <ellipse cx="165" cy="110" rx="6" ry="8" class="nail" />
+        <path d="M175,120 Q165,125 155,120" class="crease" />
+    </g>
+
+</svg>
