@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 250" width="200" height="250">
+    <defs>
+        <linearGradient id="skin" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" style="stop-color:#fce4d6;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#f0cbb5;stop-opacity:1" />
+        </linearGradient>
+        <filter id="shadow">
+            <feDropShadow dx="2" dy="2" stdDeviation="2" flood-color="#000" flood-opacity="0.2"/>
+        </filter>
+    </defs>
+    <!-- Palm -->
+    <path d="M60,120 Q100,100 140,120 L140,220 Q100,240 60,220 Z" fill="url(#skin)" filter="url(#shadow)" />
+
+    <!-- Fingers (Closed State by Default - Curled) -->
+    <!-- Pinky -->
+    <g id="pinky">
+        <rect x="135" y="130" width="25" height="40" rx="10" fill="url(#skin)" stroke="#e0b090" stroke-width="1"/>
+    </g>
+    <!-- Ring -->
+    <g id="ring">
+        <rect x="105" y="125" width="28" height="45" rx="10" fill="url(#skin)" stroke="#e0b090" stroke-width="1"/>
+    </g>
+    <!-- Middle -->
+    <g id="middle">
+        <rect x="75" y="120" width="28" height="50" rx="10" fill="url(#skin)" stroke="#e0b090" stroke-width="1"/>
+    </g>
+    <!-- Index -->
+    <g id="index">
+        <rect x="45" y="125" width="28" height="45" rx="10" fill="url(#skin)" stroke="#e0b090" stroke-width="1"/>
+    </g>
+    <!-- Thumb (Closed - tucked) -->
+    <g id="thumb">
+        <path d="M40,160 Q20,180 50,200" fill="none" stroke="#e0b090" stroke-width="20" stroke-linecap="round"/>
+    </g>
+</svg>

@@ -1,0 +1,45 @@
+/* Realistic Hand CSS Generator Logic (Internal Note)
+   Instead of static images which might be hard to source consistent sets for 0-9,
+   I will build a highly detailed SVG component that can be "posed" via CSS classes.
+   This ensures perfect resolution and consistency.
+*/
+
+.hand-realistic {
+    width: 150px;
+    height: 200px;
+    position: relative;
+    filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.2));
+}
+
+.hand-realistic .palm {
+    fill: #ffdbac; /* Skin tone */
+    stroke: #e0b090;
+    stroke-width: 2;
+}
+
+.hand-realistic .finger {
+    fill: #ffdbac;
+    stroke: #e0b090;
+    stroke-width: 2;
+    transition: all 0.3s ease;
+    transform-origin: bottom center;
+}
+
+/* Open State */
+.finger.open {
+    transform: scaleY(1);
+}
+
+/* Closed State (Curled) */
+.finger.closed {
+    transform: scaleY(0.45); /* Shorten to simulate curl */
+    fill: #eac096; /* Darker to show depth */
+}
+
+/* Thumb Special Handling */
+.thumb.open {
+    transform: rotate(-45deg) translate(-10px, -20px);
+}
+.thumb.closed {
+    transform: rotate(0deg) translate(0, 0); /* Tucked */
+}
