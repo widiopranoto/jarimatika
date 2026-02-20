@@ -82,6 +82,16 @@ const Game = {
             if (e.key === 'Enter') Game.submitAnswer();
         });
 
+        // Real-time Hand Update on Input
+        document.getElementById('answer-input').addEventListener('input', (e) => {
+            const val = parseInt(e.target.value);
+            if (!isNaN(val)) {
+                Game.renderHands(val, 'game');
+            } else {
+                Game.renderHands(0, 'game'); // Reset to 0 if empty
+            }
+        });
+
         document.querySelectorAll('.level-card').forEach(card => {
             card.addEventListener('click', () => {
                 const op = card.dataset.op;
