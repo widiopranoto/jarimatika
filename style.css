@@ -408,3 +408,18 @@ header {
     padding: 4px 12px;
     border-radius: 15px;
 }
+/* Enhanced Tutorial Button */
+#tutorial-btn {
+    background-color: var(--accent);
+    color: var(--dark);
+    font-weight: bold;
+    padding: 10px 20px;
+    font-size: 1em;
+    border-radius: 25px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+#tutorial-btn:hover {
+    background-color: #d4ac0d;
+    transform: translateY(-2px);
+}
