@@ -6,13 +6,64 @@ const Game = {
         score: 0,
         currentOperation: null,
         currentQuestion: null,
-        isProcessing: false
+        isProcessing: false,
+        tutorialStep: 0
     },
 
     config: {
         xpPerCorrect: 10,
-        xpToLevelUp: [0, 100, 300, 600], // XP thresholds for Level 1, 2, 3
-        maxLevel: 3
+        xpToLevelUp: [0, 100, 300, 600],
+        maxLevel: 3,
+        tutorialSteps: [
+            {
+                title: "Selamat Datang di Jarimatika!",
+                desc: "Metode berhitung cepat menggunakan jari-jari tangan. Mari kita mulai dari dasar.",
+                handVal: 0,
+                arrows: []
+            },
+            {
+                title: "Satuan (Tangan Kanan)",
+                desc: "Jari telunjuk kanan bernilai 1. Cobalah buka telunjukmu!",
+                handVal: 1,
+                arrows: [{ hand: 'right', finger: 'index' }]
+            },
+            {
+                title: "Angka 2, 3, 4",
+                desc: "Buka jari tengah untuk 2, jari manis untuk 3, dan kelingking untuk 4.",
+                handVal: 4,
+                arrows: [{ hand: 'right', finger: 'little' }]
+            },
+            {
+                title: "Angka 5 (Spesial)",
+                desc: "Jempol kanan bernilai 5. Keempat jari lain ditutup saat jempol dibuka.",
+                handVal: 5,
+                arrows: [{ hand: 'right', finger: 'thumb' }]
+            },
+            {
+                title: "Angka 6 sampai 9",
+                desc: "Gabungkan Jempol (5) dengan jari lain. Contoh: Jempol + Telunjuk = 6.",
+                handVal: 6,
+                arrows: [{ hand: 'right', finger: 'thumb' }, { hand: 'right', finger: 'index' }]
+            },
+            {
+                title: "Puluhan (Tangan Kiri)",
+                desc: "Konsepnya sama, tapi di tangan kiri. Telunjuk kiri = 10, Jempol kiri = 50.",
+                handVal: 10,
+                arrows: [{ hand: 'left', finger: 'index' }]
+            },
+            {
+                title: "Contoh: 12",
+                desc: "10 di kiri (Telunjuk) + 2 di kanan (Telunjuk & Tengah).",
+                handVal: 12,
+                arrows: [{ hand: 'left', finger: 'index' }, { hand: 'right', finger: 'middle' }]
+            },
+            {
+                title: "Siap Bermain?",
+                desc: "Sekarang kamu siap! Tutup tutorial ini dan pilih tantanganmu.",
+                handVal: 0,
+                arrows: []
+            }
+        ]
     },
 
     sounds: {
@@ -23,7 +74,7 @@ const Game = {
     },
 
     init: () => {
-        // Event Listeners
+        // ... (Listeners same as before, adding new ones)
         document.getElementById('login-btn').addEventListener('click', Game.handleLogin);
         document.getElementById('back-btn').addEventListener('click', () => Game.showScreen('dashboard-screen'));
         document.getElementById('submit-answer').addEventListener('click', Game.submitAnswer);
@@ -31,7 +82,6 @@ const Game = {
             if (e.key === 'Enter') Game.submitAnswer();
         });
 
-        // Dashboard Buttons
         document.querySelectorAll('.level-card').forEach(card => {
             card.addEventListener('click', () => {
                 const op = card.dataset.op;
@@ -39,19 +89,22 @@ const Game = {
             });
         });
 
-        // Tutorial
-        document.getElementById('tutorial-btn').addEventListener('click', () => {
-            Game.showScreen('tutorial-screen');
-            document.getElementById('tutorial-input').focus();
-        });
+        // Tutorial Navigation
+        document.getElementById('tutorial-btn').addEventListener('click', Game.startTutorial);
         document.getElementById('close-tutorial').addEventListener('click', () => Game.showScreen('dashboard-screen'));
+        document.getElementById('next-step').addEventListener('click', () => Game.navigateTutorial(1));
+        document.getElementById('prev-step').addEventListener('click', () => Game.navigateTutorial(-1));
         
         document.getElementById('tutorial-input').addEventListener('input', (e) => {
             const val = parseInt(e.target.value) || 0;
-            Game.renderHands(val);
+            // Render to tutorial specifically
+            Game.renderHands(val, 'tutorial'); 
         });
 
-        // Pre-load sounds (attempt to unlock audio context)
+        // Hint System
+        document.getElementById('hint-btn').addEventListener('click', Game.showHint);
+
+        // Init Sounds
         ['click', 'correct', 'wrong', 'levelup'].forEach(s => {
             try { Game.sounds[s].volume = 0.5; } catch(e){}
         });
@@ -62,11 +115,9 @@ const Game = {
             const sound = Game.sounds[name];
             if (sound) {
                 sound.currentTime = 0;
-                sound.play().catch(e => console.log("Audio play failed (user interaction needed first)", e));
+                sound.play().catch(e => {});
             }
-        } catch (e) {
-            console.error("Sound Error:", e);
-        }
+        } catch (e) {}
     },
 
     showScreen: (screenId) => {
@@ -81,66 +132,40 @@ const Game = {
         if (!username) return;
 
         const btn = document.getElementById('login-btn');
-        const msg = document.getElementById('login-message');
-        
         btn.disabled = true;
         btn.innerText = "Menghubungkan...";
-        msg.innerText = "";
-
+        
         try {
             const response = await API.login(username);
-            console.log("Login Response:", response);
-
             if (response && response.status === 'success') {
                 Game.state.username = response.data.username;
                 Game.state.level = response.data.level || { add: 1, sub: 1, mul: 1, div: 1 };
                 Game.state.xp = parseInt(response.data.xp) || 0;
                 Game.state.score = parseInt(response.data.score) || 0;
-
                 Game.updateDashboard();
                 Game.showScreen('dashboard-screen');
             } else {
-                msg.innerText = "Gagal masuk. Coba lagi.";
+                alert("Gagal Login.");
             }
         } catch (e) {
             console.error(e);
-            msg.innerText = "Terjadi kesalahan koneksi.";
         } finally {
             btn.disabled = false;
-            btn.innerText = "Mulai Petualangan";
+            btn.innerText = "Mulai";
         }
     },
 
     updateDashboard: () => {
         document.getElementById('display-username').innerText = Game.state.username;
         document.getElementById('total-xp').innerText = Game.state.xp;
-
-        // Update Level Cards
         ['add', 'sub', 'mul', 'div'].forEach(op => {
             const lvl = Game.state.level[op];
-            const card = document.querySelector(`.level-card[data-op="${op}"]`);
-            card.querySelector('.level-val').innerText = lvl;
-            
-            // Calculate progress to next level
-            // Simple logic: If max level, 100%. Else based on total XP?
-            // Since XP is global, this logic is tricky. 
-            // Let's assume global XP unlocks levels for ALL operations or per operation?
-            // Prompt: "Level lain baru akan terbuka kuncinya dengan XP dan score tertentu."
-            // "Pemain dapat melihat XP atau score yang diperlukan untuk dapat membuka level selanjutnya."
-            
-            // Let's use Global XP for simplicity as per common game design
-            let nextXp = Game.config.xpToLevelUp[lvl];
-            if (!nextXp) nextXp = 9999; // Maxed out
-            
-            // Visual feedback could be improved, but simple text is fine for now
+            document.querySelector(`.level-card[data-op="${op}"] .level-val`).innerText = lvl;
         });
     },
 
     startGame: (op) => {
         Game.state.currentOperation = op;
-        Game.state.score = 0; // Reset session score? Or keep cumulative? 
-        // Usually "Score" in DB is cumulative. Let's keep cumulative.
-        
         Game.showScreen('game-screen');
         Game.nextQuestion();
     },
@@ -149,37 +174,31 @@ const Game = {
         const op = Game.state.currentOperation;
         const level = Game.state.level[op];
         let q = {};
-
-        // Difficulty Logic
         const range = level === 1 ? 10 : (level === 2 ? 50 : 99);
         
         let a, b;
-        
         switch (op) {
             case 'add':
                 a = Math.floor(Math.random() * range);
-                b = Math.floor(Math.random() * (range - a)); // Ensure result <= range (for fingers)
+                b = Math.floor(Math.random() * (range - a));
                 q = { text: `${a} + ${b} = ?`, answer: a + b };
                 break;
             case 'sub':
                 a = Math.floor(Math.random() * range);
-                b = Math.floor(Math.random() * a); // No negative
+                b = Math.floor(Math.random() * a);
                 q = { text: `${a} - ${b} = ?`, answer: a - b };
                 break;
             case 'mul':
-                // Small numbers for mul to fit in 99
                 const maxMul = level === 1 ? 5 : (level === 2 ? 9 : 12); 
                 a = Math.floor(Math.random() * maxMul) + 1;
                 b = Math.floor(Math.random() * maxMul) + 1;
-                // Cap at 99 for Jarimatika display
                 if (a * b > 99) { a = 9; b = 9; } 
                 q = { text: `${a} × ${b} = ?`, answer: a * b };
                 break;
             case 'div':
-                // Inverse multiplication
                 const maxDiv = level === 1 ? 5 : 9;
-                b = Math.floor(Math.random() * maxDiv) + 1; // Divisor
-                a = b * (Math.floor(Math.random() * maxDiv) + 1); // Dividend
+                b = Math.floor(Math.random() * maxDiv) + 1;
+                a = b * (Math.floor(Math.random() * maxDiv) + 1);
                 q = { text: `${a} ÷ ${b} = ?`, answer: a / b };
                 break;
         }
@@ -187,46 +206,30 @@ const Game = {
         Game.state.currentQuestion = q;
         document.getElementById('question-text').innerText = q.text;
         document.getElementById('answer-input').value = '';
-        document.getElementById('answer-input').focus();
         document.getElementById('feedback-msg').innerText = '';
-        document.getElementById('feedback-msg').className = '';
         
-        // Hide hands initially or show "0"? Show 0.
-        Game.renderHands(0); 
+        // Reset hands to 0 for new question
+        Game.renderHands(0, 'game');
     },
 
     submitAnswer: async () => {
         if (Game.state.isProcessing) return;
-        
         const input = document.getElementById('answer-input');
         const val = parseInt(input.value);
         const correct = Game.state.currentQuestion.answer;
         const feedback = document.getElementById('feedback-msg');
 
         if (isNaN(val)) return;
-
         Game.state.isProcessing = true;
 
         if (val === correct) {
-            // Correct
             Game.playSound('correct');
             feedback.innerText = "Benar! 🎉";
-            feedback.className = "feedback-correct";
-            
+            feedback.style.color = "var(--secondary)";
             Game.state.score += 10;
             Game.state.xp += Game.config.xpPerCorrect;
-            
-            // Show hands for the answer
-            Game.renderHands(correct);
-
-            // Check Level Up
+            Game.renderHands(correct, 'game');
             await Game.checkLevelUp();
-            
-            // Update UI
-            document.getElementById('game-score').innerText = Game.state.score;
-            document.getElementById('total-xp').innerText = Game.state.xp; // In dashboard usually, but useful here
-
-            // Save Progress
             API.updateProgress({
                 username: Game.state.username,
                 level: Game.state.level,
@@ -234,101 +237,96 @@ const Game = {
                 score: Game.state.score,
                 action: 'update'
             });
-
             setTimeout(() => {
                 Game.state.isProcessing = false;
                 Game.nextQuestion();
             }, 2000);
-
         } else {
-            // Wrong
             Game.playSound('wrong');
-            feedback.innerText = `Salah, jawabannya ${correct}`;
-            feedback.className = "feedback-wrong";
-            Game.renderHands(correct); // Show correct hand gesture
-            
-            setTimeout(() => {
-                Game.state.isProcessing = false;
-                // Optional: Let them retry or next question? Next for flow.
-                Game.nextQuestion();
-            }, 3000);
+            feedback.innerText = `Salah, coba lagi!`;
+            feedback.style.color = "var(--danger)";
+            setTimeout(() => { Game.state.isProcessing = false; }, 1000);
         }
+    },
+
+    showHint: () => {
+        const correct = Game.state.currentQuestion.answer;
+        Game.renderHands(correct, 'game');
     },
 
     checkLevelUp: async () => {
         const op = Game.state.currentOperation;
         const currentLvl = Game.state.level[op];
-        
         if (currentLvl >= Game.config.maxLevel) return;
-
         const nextThreshold = Game.config.xpToLevelUp[currentLvl];
         if (Game.state.xp >= nextThreshold) {
-            // Level Up!
             Game.state.level[op]++;
             Game.playSound('levelup');
-            alert(`Selamat! Kamu naik ke Level ${Game.state.level[op]} untuk ${op}!`);
-            // We don't wait for API here, it saves in the main flow
+            alert(`Selamat! Naik Level ${Game.state.level[op]}!`);
         }
     },
 
-    // Jarimatika Rendering Logic
-    renderHands: (num) => {
-        if (num < 0 || num > 99) return; // Limit for this implementation
+    // --- Tutorial Logic ---
+    startTutorial: () => {
+        Game.state.tutorialStep = 0;
+        Game.showScreen('tutorial-screen');
+        Game.updateTutorialUI();
+    },
 
+    navigateTutorial: (dir) => {
+        const newStep = Game.state.tutorialStep + dir;
+        if (newStep >= 0 && newStep < Game.config.tutorialSteps.length) {
+            Game.state.tutorialStep = newStep;
+            Game.updateTutorialUI();
+        }
+    },
+
+    updateTutorialUI: () => {
+        const step = Game.config.tutorialSteps[Game.state.tutorialStep];
+        document.getElementById('step-title').innerText = step.title;
+        document.getElementById('step-desc').innerText = step.desc;
+        document.getElementById('tutorial-input').value = step.handVal;
+        
+        // Render Hands
+        Game.renderHands(step.handVal, 'tutorial');
+
+        // Arrows (Only visual, now image based hands don't have finger elements to attach to)
+        // We can still overlay arrows based on approximate positions if needed, but the prompt focused on Image replacement.
+        // Let's keep arrows overlay but simplify or remove if not applicable to images.
+        // The original plan said "Add arrows...". With static images, we can't target "finger" elements.
+        // We will skip arrows for now as images handle the "show" part.
+        const arrowContainer = document.getElementById('tutorial-arrows');
+        arrowContainer.innerHTML = ''; 
+        
+        // Update Dots
+        const dots = document.getElementById('tutorial-dots');
+        dots.innerHTML = '';
+        Game.config.tutorialSteps.forEach((_, i) => {
+            const dot = document.createElement('span');
+            dot.className = `dot ${i === Game.state.tutorialStep ? 'active' : ''}`;
+            dots.appendChild(dot);
+        });
+
+        document.getElementById('prev-step').disabled = Game.state.tutorialStep === 0;
+        document.getElementById('next-step').disabled = Game.state.tutorialStep === Game.config.tutorialSteps.length - 1;
+    },
+
+    // --- Core Render Logic (Image Based) ---
+    renderHands: (num, context = 'game') => {
+        // context: 'game' or 'tutorial'
+        if (num < 0 || num > 99) return;
         const tens = Math.floor(num / 10);
         const units = num % 10;
-
-        // Update ALL instances (Game screen and Tutorial screen)
-        Game.setHandState('.left-hand', tens);
-        Game.setHandState('.right-hand', units);
-    },
-
-    setHandState: (selector, val) => {
-        // Standard Jarimatika:
-        // 0: Closed
-        // 1: Index
-        // 2: Index + Middle
-        // 3: Index + Middle + Ring
-        // 4: Index + Middle + Ring + Little
-        // 5: Thumb
-        // 6: Thumb + Index
-        // 7: Thumb + Index + Middle
-        // 8: Thumb + Index + Middle + Ring
-        // 9: All Open
         
-        const hand = document.querySelector(selector);
-        const fingers = {
-            thumb: false,
-            index: false,
-            middle: false,
-            ring: false,
-            little: false
-        };
-
-        if (val >= 5) {
-            fingers.thumb = true;
-            val -= 5;
-        }
+        // Target IDs: game-left-hand-img, game-right-hand-img
+        const leftId = `${context}-left-hand-img`;
+        const rightId = `${context}-right-hand-img`;
         
-        if (val >= 1) fingers.index = true;
-        if (val >= 2) fingers.middle = true;
-        if (val >= 3) fingers.ring = true;
-        if (val >= 4) fingers.little = true;
-
-        // Apply classes to ALL matching hands (e.g., both tutorial and game screens)
-        const hands = document.querySelectorAll(selector);
-        hands.forEach(hand => {
-            for (const [finger, isOpen] of Object.entries(fingers)) {
-                const el = hand.querySelector(`.finger.${finger}`);
-                if (el) {
-                    if (isOpen) {
-                        el.classList.remove('closed');
-                    } else {
-                        el.classList.add('closed');
-                    }
-                }
-            }
-        });
+        const leftEl = document.getElementById(leftId);
+        const rightEl = document.getElementById(rightId);
+        
+        if (leftEl) leftEl.src = `images/left/${tens}.png`;
+        if (rightEl) rightEl.src = `images/right/${units}.png`;
     }
 };
 

@@ -1,6 +1,6 @@
 const API = {
     // PASTE YOUR GOOGLE APPS SCRIPT WEB APP URL HERE
-    BASE_URL: "https://script.google.com/macros/s/AKfycbzcdnX74CN5U15PHJpZzoa4o6oAIXGqn5d3gsJdvBwIPtmF9E9QpwReR6QBYK4CKcj1/exec", 
+    BASE_URL: "https://script.google.com/macros/s/AKfycbzU1gVgiKR0NK3eOkSeoRhC5P96gxtU1Qt1kfll20sti560xOG9yv2TsrBzs8aQK_Ju/exec", 
 
     mockData: {
         username: "DemoUser",

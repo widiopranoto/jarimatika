@@ -1,0 +1,41 @@
+<div id="tutorial-screen" class="screen">
+    <header>
+        <h2>Panduan Jarimatika</h2>
+        <button class="small-btn" id="close-tutorial">✖️ Tutup</button>
+    </header>
+    
+    <div class="tutorial-wrapper">
+        <div id="tutorial-step-display" class="tutorial-card">
+            <!-- Dynamic Content -->
+            <h3 id="step-title">Pengenalan Tangan</h3>
+            <p id="step-desc">Tangan Kiri mewakili Puluhan, Tangan Kanan mewakili Satuan.</p>
+            
+            <div class="tutorial-visual">
+                <!-- Highlight Arrows Overlay -->
+                <div id="tutorial-arrows"></div>
+                
+                <div class="hands-container">
+                    <div class="hand-wrapper left-hand tutorial-hand">
+                        <!-- New Realistic SVG Here -->
+                        <div class="hand-label">Kiri (Puluhan)</div>
+                    </div>
+                    <div class="hand-wrapper right-hand tutorial-hand">
+                        <!-- New Realistic SVG Here -->
+                        <div class="hand-label">Kanan (Satuan)</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="step-controls">
+                <button id="prev-step" disabled>⬅️ Kembali</button>
+                <div class="step-dots">
+                    <span class="dot active"></span>
+                    <span class="dot"></span>
+                    <span class="dot"></span>
+                    <span class="dot"></span>
+                </div>
+                <button id="next-step">Lanjut ➡️</button>
+            </div>
+        </div>
+    </div>
+</div>
